@@ -1,0 +1,203 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{verbatim}
+\usepackage{tabto}
+\usepackage{pmboxdraw}
+\usepackage{textcomp}
+\usepackage{fancyvrb,newverbs,xcolor}
+
+\title{Functional logic programming}
+\author{Giorgio Marinelli\thanks{\url{https://giorgiomarinelli.it/cv}}}
+% \date{}
+
+\addtobeamertemplate{navigation symbols}{}{
+  \usebeamerfont{footline}
+  \usebeamercolor[fg]{footline}
+  \hspace{1em}
+  \insertframenumber
+}
+
+\definecolor{cverbbg}{gray}{0.93}
+
+\newenvironment{cverbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{\BUseVerbatim{cverb}}%
+  \endflushleft
+}
+
+\newenvironment{lcverbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\dimexpr\linewidth-2\fboxsep][l]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
+\newcommand{\ctexttt}[1]{\colorbox{cverbbg}{\texttt{#1}}}
+\newverbcommand{\cverb}
+  {\setbox\verbbox\hbox\bgroup}
+  {\egroup\colorbox{cverbbg}{\box\verbbox}}
+
+\begin{document}
+
+% % %
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% % %
+
+\section{Introduction}
+\begin{frame}{Introduction}
+Functional logic programming is the combination of two kind of declarative languages:
+\begin{itemize}
+  \item Functional languages (eg. LISP, ML, Haskell, ...)
+  \item Logic languages (eg. Prolog, Datalog, ...)
+\end{itemize}
+
+\end{frame}
+
+% % %
+
+\section{Introduction}
+\begin{frame}{Introduction}
+
+An example of a functional logic programming language is Curry\footnote{\url{http://www.curry-language.org/}}
+
+\vspace{1em}
+
+It is based on the Haskell language:
+
+\vspace{1em}
+
+\begin{itemize}
+  \item Statically typed
+  \item Purely functional
+  \item Type inference
+  \item Lazy evaluation
+\end{itemize}
+
+\end{frame}
+
+% % %
+
+\section{Introduction}
+\begin{frame}{Introduction}
+
+It has \emph{functional logic programming} features, like:
+
+\vspace{1em}
+
+\begin{itemize}
+  \item Narrowing
+  \item Functional patterns
+  \item Non-determinism
+  \item Strategies
+\end{itemize}
+
+\vspace{1em}
+
+There exist two main implementation of the language:
+
+\vspace{1em}
+
+\begin{itemize}
+  \item PAKCS: compile Curry programs into Prolog programs
+  \item KiCS2: compile Curry programs into Haskell programs
+\end{itemize}
+
+\end{frame}
+
+% % %
+
+\section{Narrowing}
+\begin{frame}[fragile]{Narrowing}
+
+One of the main feature in the Curry language is Narrowing: a combination of variable instantiation and term reduction (originally introduced in automated theorem proving).
+
+\begin{cverbatim}
+last :: [a] -> a
+last xs | zs ++ [e] =:= xs   =   e
+  where zs, e free
+\end{cverbatim}
+
+\end{frame}
+
+% % %
+
+\section{Functional pattern}
+\begin{frame}[fragile]{Functional pattern}
+
+The \ctexttt{last} rule can be reformulated using \emph{functional pattern}: a pattern with a function inside.
+
+\begin{cverbatim}
+last :: [a] -> a
+last (zs ++ [e]) = e
+\end{cverbatim}
+
+\vspace{1em}
+
+Haskell, do not allow this rule because it is not constructor based.
+
+\end{frame}
+
+% % %
+
+\section{Non-determinism}
+
+\begin{frame}[fragile]{Non-determinism}
+
+Curry allow to define non deterministic computations (or operations).
+
+\vspace{1em}
+
+\begin{cverbatim}
+(?) :: a -> a -> a
+x ? y = x
+x ? y = y
+\end{cverbatim}
+
+\vspace{1em}
+
+We can define an non deterministic operation like flipping a coin:
+
+\begin{cverbatim}
+coin :: Int
+coin = 0 ? 1
+\end{cverbatim}
+
+\end{frame}
+
+% % %
+
+\section{Demo}
+
+\begin{frame}[c]{}
+
+\centering {\huge Demo}
+
+\end{frame}
+
+\end{document}
